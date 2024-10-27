@@ -39,4 +39,12 @@ sealed class NavItem {
             icon = Icons.Default.Settings,
         )
 
+    object Users :
+        Item(
+            path = NavPath.USERS.toString(),
+            title = NavTitle.OTHER,
+            icon = Icons.Default.Person,
+        )
+
+
 }

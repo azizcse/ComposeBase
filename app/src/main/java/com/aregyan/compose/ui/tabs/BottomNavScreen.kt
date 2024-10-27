@@ -117,6 +117,15 @@ fun BottomNavScreen(navController: NavHostController) {
                         }
                     }
                 )
+                NavigationDrawerItem(
+                    label = { Text("UserList") },
+                    selected = false,
+                    onClick = {
+                        navController.navigate(NavPath.USERS.name)
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    })
             }
         }) {
         Scaffold(

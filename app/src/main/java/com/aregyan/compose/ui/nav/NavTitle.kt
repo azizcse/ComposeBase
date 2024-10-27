@@ -6,4 +6,5 @@ object NavTitle {
     const val LIST = "List"
     const val PROFILE = "Profile"
     const val OTHER = "Other"
+    const val USERS = "Users"
 }
