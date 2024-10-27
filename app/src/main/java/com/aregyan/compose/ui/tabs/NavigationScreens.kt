@@ -1,6 +1,8 @@
 package com.aregyan.compose.ui.tabs
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,6 +25,6 @@ fun NavigationScreens(navController: NavHostController) {
         composable(NavItem.Search.path) { SearchScreen() }
         composable(NavItem.List.path) { ListScreen() }
         composable(NavItem.Profile.path) { ProfileScreen() }
-        composable(NavItem.Other.path){ OtherScreen()}
+        composable(NavItem.Other.path){ OtherScreen(modifier = Modifier.fillMaxHeight())}
     }
 }

@@ -10,11 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JetpackComposeBoilerplate">
+        android:theme="@style/Theme.AndroidComposeBase">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.SplashScreen.MySplash">
+            android:theme="@style/Theme.AndroidComposeBase">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.aregyan.compose.R
-import com.aregyan.compose.ui.theme.md_theme_light_onBackground
+import com.aregyan.compose.ui.theme.PurpleGrey40
 
 /**
  * Composable function that represents the profile screen of the application.
@@ -20,7 +20,7 @@ fun ProfileScreen() {
         Text(
             text = stringResource(id = R.string.profile),
             style = typography.titleLarge,
-            color = md_theme_light_onBackground
+            color = PurpleGrey40
         )
     }
 }

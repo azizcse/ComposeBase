@@ -5,4 +5,5 @@
     <string name="search">Search</string>
     <string name="list">List</string>
     <string name="profile">Profile</string>
+    <string name="back_button">Back</string>
 </resources>

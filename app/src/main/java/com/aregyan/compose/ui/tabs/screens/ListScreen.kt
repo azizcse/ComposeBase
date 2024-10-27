@@ -9,7 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.aregyan.compose.R
-import com.aregyan.compose.ui.theme.md_theme_light_inversePrimary
+import com.aregyan.compose.ui.theme.PurpleGrey40
+
 
 /**
  * Composable function that represents the list screen of the application.
@@ -20,7 +21,7 @@ fun ListScreen() {
         Text(
             text = stringResource(id = R.string.list),
             style = typography.titleLarge,
-            color = md_theme_light_inversePrimary
+            color = PurpleGrey40
         )
     }
 }

@@ -33,6 +33,7 @@ fun BottomNavigationBar(navController: NavHostController, screenName:(String)->U
                         }
                         launchSingleTop = true
                         restoreState = true
+                        selectedItem = index
                     }
                 },
             )

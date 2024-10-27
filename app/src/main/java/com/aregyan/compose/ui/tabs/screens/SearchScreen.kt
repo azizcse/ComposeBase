@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.aregyan.compose.R
-import com.aregyan.compose.ui.theme.md_theme_dark_secondaryContainer
+import com.aregyan.compose.ui.theme.PurpleGrey40
 
 /**
  * Composable function that represents the search screen of the application.
@@ -20,7 +20,7 @@ fun SearchScreen() {
         Text(
             text = stringResource(id = R.string.search),
             style = typography.titleLarge,
-            color = md_theme_dark_secondaryContainer
+            color = PurpleGrey40
         )
     }
 }

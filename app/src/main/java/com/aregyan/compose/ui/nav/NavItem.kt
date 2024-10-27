@@ -9,7 +9,9 @@ import androidx.compose.material.icons.filled.Settings
 
 sealed class NavItem {
     object Home :
-        Item(path = NavPath.HOME.toString(), title = NavTitle.HOME, icon = Icons.Default.Home)
+        Item(path = NavPath.HOME.toString(),
+            title = NavTitle.HOME,
+            icon = Icons.Default.Home)
 
     object Search :
         Item(
@@ -19,7 +21,9 @@ sealed class NavItem {
         )
 
     object List :
-        Item(path = NavPath.LIST.toString(), title = NavTitle.LIST, icon = Icons.Default.List)
+        Item(path = NavPath.LIST.toString(),
+            title = NavTitle.LIST,
+            icon = Icons.Default.List)
 
     object Profile :
         Item(
