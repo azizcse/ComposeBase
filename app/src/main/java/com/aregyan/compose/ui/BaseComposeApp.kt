@@ -1,7 +1,12 @@
-package com.aregyan.compose.ui.tabs
+package com.aregyan.compose.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -9,21 +14,21 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,18 +37,36 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.aregyan.compose.R
+import com.aregyan.compose.ui.details.DetailsScreen
+import com.aregyan.compose.ui.other.OtherScreen
+import com.aregyan.compose.ui.users.UsersScreen
 import com.dawinder.btnjc.nav.NavItem
 import com.dawinder.btnjc.nav.NavPath
+import com.dawinder.btnjc.ui.composables.tabs.HomeScreen
+import com.dawinder.btnjc.ui.composables.tabs.ListScreen
+import com.dawinder.btnjc.ui.composables.tabs.ProfileScreen
+import com.dawinder.btnjc.ui.composables.tabs.SearchScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+
+/**
+ * @author md-azizul-islam
+ * Created 10/28/24 at 9:53 AM
+ */
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CupcakeAppBar(
+fun BaseAppBar(
     currentScreen: String,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
@@ -52,6 +75,9 @@ fun CupcakeAppBar(
     drawerState: DrawerState
 
 ) {
+    val navItems =
+        listOf(NavItem.Home.path, NavItem.Search.path, NavItem.List.path, NavItem.Profile.path)
+
     TopAppBar(
         title = { Text(currentScreen) },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -59,7 +85,7 @@ fun CupcakeAppBar(
         ),
         modifier = modifier,
         navigationIcon = {
-            if (currentScreen == NavPath.OTHER.name) {
+            if (!navItems.contains(currentScreen)) {
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
@@ -84,35 +110,27 @@ fun CupcakeAppBar(
     )
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BottomNavScreen(navController: NavHostController) {
+fun BaseComposeApp() {
+    val navController = rememberNavController()
 
-    var selectedItemIndex by rememberSaveable {
-        mutableStateOf(0)
-    }
-    //var pageTitle: String = "Title"
-    var presses by remember { mutableStateOf("Title") }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
     // Get current back stack entry
     val backStackEntry by navController.currentBackStackEntryAsState()
-    //val scaffoldState = rememberScaffoldState()
     val currentScreen = backStackEntry?.destination?.route ?: NavPath.HOME.name
 
     ModalNavigationDrawer(drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
                 Text("Drawer title", modifier = Modifier.padding(16.dp))
-                HorizontalDivider()
+                //HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text(text = "Drawer Item") },
                     selected = false,
                     onClick = {
                         navController.navigate(NavPath.OTHER.name)
-                        scope.launch {
+                        coroutineScope.launch {
                             drawerState.close()
                         }
                     }
@@ -122,7 +140,7 @@ fun BottomNavScreen(navController: NavHostController) {
                     selected = false,
                     onClick = {
                         navController.navigate(NavPath.USERS.name)
-                        scope.launch {
+                        coroutineScope.launch {
                             drawerState.close()
                         }
                     })
@@ -130,27 +148,83 @@ fun BottomNavScreen(navController: NavHostController) {
         }) {
         Scaffold(
             topBar = {
-                CupcakeAppBar(
+                BaseAppBar(
                     currentScreen = currentScreen,
                     canNavigateBack = navController.previousBackStackEntry != null,
                     navigateUp = { navController.navigateUp() },
-                    scope = scope,
+                    scope = coroutineScope,
                     drawerState = drawerState
                 )
             },
             bottomBar = {
                 if (currentScreen != NavPath.OTHER.name)
                     BottomAppBar {
-                        BottomNavigationBar(
-                            navController = navController,
-                            screenName = { name -> presses = name },
-                        )
+                        BottomNavigationBar(navController = navController)
                     }
             },
-        ) {
-            NavigationScreens(navController = navController)
+        ) { innerPadding ->
+            NavigationScreen(navController = navController, innerPadding = innerPadding)
         }
     }
 
+}
 
+@Composable
+fun NavigationScreen(navController: NavHostController, innerPadding: PaddingValues) {
+    NavHost(
+        navController, startDestination = NavItem.Home.path, modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+    ) {
+        composable(NavItem.Home.path) { HomeScreen() }
+        composable(NavItem.Search.path) { SearchScreen() }
+        composable(NavItem.List.path) { ListScreen() }
+        composable(NavItem.Profile.path) { ProfileScreen() }
+        composable(NavItem.Other.path) { OtherScreen(modifier = Modifier.fillMaxHeight()) }
+        composable(NavItem.Users.path) { backStackEntry ->
+            UsersScreen(onUserClick = { username ->
+                // In order to discard duplicated navigation events, we check the Lifecycle
+                if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED) {
+                    navController.navigate("${Route.DETAIL}/$username")
+                }
+            })
+        }
+        composable(
+            route = "${NavItem.UserDetails.path}/{${Argument.USERNAME}}",
+            arguments = listOf(
+                navArgument(Argument.USERNAME) {
+                    type = NavType.StringType
+                }
+            ),
+        ) {
+            DetailsScreen()
+        }
+    }
+}
+
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController) {
+    val navItems = listOf(NavItem.Home, NavItem.Search, NavItem.List, NavItem.Profile)
+    var selectedItem by rememberSaveable { mutableStateOf(0) }
+    NavigationBar {
+        navItems.forEachIndexed { index, item ->
+            NavigationBarItem(
+                alwaysShowLabel = true,
+                icon = { Icon(item.icon, contentDescription = item.title) },
+                label = { Text(item.title) },
+                selected = selectedItem == index,
+                onClick = {
+                    navController.navigate(item.path) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) { saveState = true }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                        selectedItem = index
+                    }
+                },
+            )
+        }
+    }
 }

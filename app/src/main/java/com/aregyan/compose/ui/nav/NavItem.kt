@@ -3,15 +3,18 @@ package com.dawinder.btnjc.nav
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 
 sealed class NavItem {
     object Home :
-        Item(path = NavPath.HOME.toString(),
+        Item(
+            path = NavPath.HOME.toString(),
             title = NavTitle.HOME,
-            icon = Icons.Default.Home)
+            icon = Icons.Default.Home
+        )
 
     object Search :
         Item(
@@ -21,9 +24,11 @@ sealed class NavItem {
         )
 
     object List :
-        Item(path = NavPath.LIST.toString(),
+        Item(
+            path = NavPath.LIST.toString(),
             title = NavTitle.LIST,
-            icon = Icons.Default.List)
+            icon = Icons.Default.List
+        )
 
     object Profile :
         Item(
@@ -42,8 +47,15 @@ sealed class NavItem {
     object Users :
         Item(
             path = NavPath.USERS.toString(),
-            title = NavTitle.OTHER,
+            title = NavTitle.USERS,
             icon = Icons.Default.Person,
+        )
+
+    object UserDetails :
+        Item(
+            path = NavPath.DETAIL.toString(),
+            title = NavTitle.USERDETAIL,
+            icon = Icons.Default.MoreVert,
         )
 
 
