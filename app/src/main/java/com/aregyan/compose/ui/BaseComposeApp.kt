@@ -1,12 +1,9 @@
 package com.aregyan.compose.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
@@ -30,7 +27,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -59,10 +55,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * @author md-azizul-islam
+ * @author md-azizul-isla
  * Created 10/28/24 at 9:53 AM
  */
 
+val navItems =
+    listOf(NavItem.Home.path, NavItem.Search.path, NavItem.List.path, NavItem.Profile.path)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,8 +73,6 @@ fun BaseAppBar(
     drawerState: DrawerState
 
 ) {
-    val navItems =
-        listOf(NavItem.Home.path, NavItem.Search.path, NavItem.List.path, NavItem.Profile.path)
 
     TopAppBar(
         title = { Text(currentScreen) },
@@ -157,7 +153,7 @@ fun BaseComposeApp() {
                 )
             },
             bottomBar = {
-                if (currentScreen != NavPath.OTHER.name)
+                if (navItems.contains(currentScreen))
                     BottomAppBar {
                         BottomNavigationBar(navController = navController)
                     }

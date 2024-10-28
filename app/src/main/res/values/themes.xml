@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="Theme.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_color</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/foodilogo</item>
+        <item name="postSplashScreenTheme">@style/Theme.AndroidComposeBase</item>
+    </style>
+
     <style name="Theme.AndroidComposeBase" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
