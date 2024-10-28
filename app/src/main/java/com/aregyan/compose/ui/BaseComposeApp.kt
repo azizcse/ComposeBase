@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.aregyan.compose.R
 import com.aregyan.compose.ui.details.DetailsScreen
+import com.aregyan.compose.ui.login.LoginPage
 import com.aregyan.compose.ui.other.OtherScreen
 import com.aregyan.compose.ui.users.UsersScreen
 import com.dawinder.btnjc.nav.NavItem
@@ -81,6 +82,9 @@ fun BaseAppBar(
         ),
         modifier = modifier,
         navigationIcon = {
+            if (currentScreen == NavPath.LOGIN.name) {
+                return@TopAppBar
+            }
             if (!navItems.contains(currentScreen)) {
                 IconButton(onClick = navigateUp) {
                     Icon(
@@ -153,7 +157,7 @@ fun BaseComposeApp() {
                 )
             },
             bottomBar = {
-                if (navItems.contains(currentScreen))
+                if (navItems.contains(currentScreen) && currentScreen != NavPath.LOGIN.name)
                     BottomAppBar {
                         BottomNavigationBar(navController = navController)
                     }
@@ -168,10 +172,11 @@ fun BaseComposeApp() {
 @Composable
 fun NavigationScreen(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(
-        navController, startDestination = NavItem.Home.path, modifier = Modifier
+        navController, startDestination = NavItem.Login.path, modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
     ) {
+        composable(NavItem.Login.path) { LoginPage() }
         composable(NavItem.Home.path) { HomeScreen() }
         composable(NavItem.Search.path) { SearchScreen() }
         composable(NavItem.List.path) { ListScreen() }

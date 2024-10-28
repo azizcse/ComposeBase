@@ -3,12 +3,20 @@ package com.dawinder.btnjc.nav
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 
 sealed class NavItem {
+    object Login :
+        Item(
+            path = NavPath.LOGIN.toString(),
+            title = NavTitle.LOGIN,
+            icon = Icons.Default.Lock
+        )
+
     object Home :
         Item(
             path = NavPath.HOME.toString(),
