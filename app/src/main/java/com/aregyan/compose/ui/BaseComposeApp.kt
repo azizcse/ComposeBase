@@ -183,7 +183,11 @@ fun NavigationScreen(navController: NavHostController, innerPadding: PaddingValu
                 navController.navigateToBottomBarRoute(NavItem.Login.path)
             }
         }
-        composable(NavItem.Login.path) { LoginPage() }
+        composable(NavItem.Login.path) {
+            LoginPage {
+                navController.navigateToBottomBarRoute(NavItem.Home.path)
+            }
+        }
         composable(NavItem.Home.path) { HomeScreen() }
         composable(NavItem.Search.path) { SearchScreen() }
         composable(NavItem.List.path) { ListScreen() }

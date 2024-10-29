@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
  */
 
 @Composable
-fun LoginPage() {
+fun LoginPage(onSubmit:()->Unit) {
     val ctx = LocalContext.current
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
@@ -53,6 +53,7 @@ fun LoginPage() {
             )
             Button(
                 onClick = {
+                    onSubmit()
                     Toast.makeText(ctx,"Name ${uiState.userName} Pass: ${uiState.password}",Toast.LENGTH_LONG).show()
                 },
                 enabled = uiState.userName.isNotBlank() && uiState.password.isNotBlank(),
