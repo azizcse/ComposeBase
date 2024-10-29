@@ -10,6 +10,13 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 
 sealed class NavItem {
+    object OnBoarding :
+        Item(
+            path = NavPath.ONBOARDING.toString(),
+            title = NavTitle.ONBOARDING,
+            icon = Icons.Default.Lock
+        )
+
     object Login :
         Item(
             path = NavPath.LOGIN.toString(),

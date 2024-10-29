@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -44,6 +45,7 @@ import androidx.navigation.navArgument
 import com.aregyan.compose.R
 import com.aregyan.compose.ui.details.DetailsScreen
 import com.aregyan.compose.ui.login.LoginPage
+import com.aregyan.compose.ui.onboarding.OnboardingScreen
 import com.aregyan.compose.ui.other.OtherScreen
 import com.aregyan.compose.ui.users.UsersScreen
 import com.dawinder.btnjc.nav.NavItem
@@ -172,10 +174,15 @@ fun BaseComposeApp() {
 @Composable
 fun NavigationScreen(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(
-        navController, startDestination = NavItem.Login.path, modifier = Modifier
+        navController, startDestination = NavItem.OnBoarding.path, modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
     ) {
+        composable(NavItem.OnBoarding.path) {
+            OnboardingScreen {
+                navController.navigateToBottomBarRoute(NavItem.Login.path)
+            }
+        }
         composable(NavItem.Login.path) { LoginPage() }
         composable(NavItem.Home.path) { HomeScreen() }
         composable(NavItem.Search.path) { SearchScreen() }
@@ -201,6 +208,26 @@ fun NavigationScreen(navController: NavHostController, innerPadding: PaddingValu
             DetailsScreen()
         }
     }
+}
+
+fun NavController.navigateToBottomBarRoute(route: String) {
+    navigate(route) {
+        launchSingleTop = true
+        restoreState = true
+        popUpTo(graph.startDestinationId) {
+            saveState = true
+        }
+    }
+    /*val currentRoute = currentDestination?.route
+    if (route != currentRoute) {
+        navigate(route) {
+            launchSingleTop = true
+            restoreState = true
+            popUpTo(graph.startDestinationId) {
+                saveState = true
+            }
+        }
+    }*/
 }
 
 

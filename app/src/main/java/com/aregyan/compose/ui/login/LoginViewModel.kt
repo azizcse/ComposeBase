@@ -20,18 +20,18 @@ class LoginViewModel @Inject constructor(
         private set
 
     fun onUserNameChanged(name: String) {
-        uiState = if (name.isNullOrEmpty()) {
+        uiState = if (name.isEmpty()) {
             uiState.copy()
         } else {
-            uiState.copy(userName = name, password = uiState.password)
+            uiState.copy(userName = name)
         }
     }
 
     fun onPasswordChanged(password: String) {
-        uiState = if (password.isNullOrEmpty()) {
+        uiState = if (password.isEmpty()) {
             uiState.copy()
         } else {
-            uiState.copy(userName = uiState.userName, password = password)
+            uiState.copy(password = password)
         }
     }
 }

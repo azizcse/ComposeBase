@@ -1,6 +1,7 @@
 package com.dawinder.btnjc.nav
 
 object NavTitle {
+    const val ONBOARDING = "Onboarding"
     const val LOGIN = "Home"
     const val HOME = "Home"
     const val SEARCH = "Search"
