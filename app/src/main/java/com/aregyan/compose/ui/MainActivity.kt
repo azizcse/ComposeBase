@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +45,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,32 +55,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.aregyan.compose.ui.navgraph.NavGraph
 import com.aregyan.compose.ui.theme.BaseAppTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition(condition = { viewModel.loading.value })
+        }
         setContent {
             BaseAppTheme {
-                Surface(
+                val isSystemInDarkMode = isSystemInDarkTheme()
+                val systemUiColor = rememberSystemUiController()
+                SideEffect {
+                    systemUiColor.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = !isSystemInDarkMode
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = MaterialTheme.colorScheme.background)
+                ) {
+                    Box(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxSize()) {
+                        NavGraph(mainViewModel = viewModel)
+                    }
+                }
+                /*Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     BaseComposeApp()
-                }
-                //val navController = rememberNavController()
-                //BottomNavScreen(navController = navController)
-                //ComposeApp()
-
-                /*Surface(modifier = Modifier.fillMaxSize()) {
-
                 }*/
-                /*val navController = rememberNavController()
-                //ComposeApp()
-                SetupNavGraph(navController);*/
+                //BaseComposeApp()
             }
         }
     }
@@ -207,7 +224,7 @@ private fun OpenDialog() {
 private fun MaterialMenu3() {
     var expanded by remember { mutableStateOf(false) }
     Box {
-        IconButton(onClick = { expanded = true}) {
+        IconButton(onClick = { expanded = true }) {
             Icon(imageVector = Icons.Default.MoreVert, contentDescription = "")
         }
     }
@@ -228,7 +245,7 @@ private fun MaterialMenu3() {
             text = { Text("Send feedback") },
             onClick = { expanded = false },
             leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "") },
-            trailingIcon = {Text("F5")}
+            trailingIcon = { Text("F5") }
         )
     }
 }

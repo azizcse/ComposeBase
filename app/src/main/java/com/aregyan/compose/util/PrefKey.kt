@@ -6,4 +6,6 @@ package com.aregyan.compose.util
  */
 object PrefKey {
     const val KEY_THEME = "appTheme"
+    const val KEY_ONBORDING = "onboarding"
+    const val KEY_LOGIN = "keyLogin"
 }
