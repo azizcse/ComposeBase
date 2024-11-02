@@ -81,20 +81,11 @@ class MainActivity : ComponentActivity() {
                 }
                 Box(
                     modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
                         .fillMaxSize()
-                        .background(color = MaterialTheme.colorScheme.background)
                 ) {
-                    Box(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxSize()) {
-                        NavGraph(mainViewModel = viewModel)
-                    }
+                    NavGraph(mainViewModel = viewModel)
                 }
-                /*Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    BaseComposeApp()
-                }*/
-                //BaseComposeApp()
             }
         }
     }

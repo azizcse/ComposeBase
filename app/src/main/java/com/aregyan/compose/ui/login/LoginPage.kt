@@ -31,18 +31,25 @@ import androidx.hilt.navigation.compose.hiltViewModel
  */
 
 @Composable
-fun LoginPage(onSubmit:()->Unit) {
+fun LoginPage(onSubmit: () -> Unit) {
     val ctx = LocalContext.current
     val viewModel = hiltViewModel<LoginViewModel>()
     val uiState = viewModel.uiState
     //val scope = rememberCoroutineScope()
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(modifier = Modifier.background(color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(10.dp)).padding(10.dp), verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .padding(10.dp), verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             CommonTextField(
                 label = "User Name",
                 value = uiState.userName,
-                onValueChanged = { viewModel.onUserNameChanged(it)}
+                onValueChanged = { viewModel.onUserNameChanged(it) }
             )
             CommonTextField(
                 label = "Password",
@@ -54,7 +61,12 @@ fun LoginPage(onSubmit:()->Unit) {
             Button(
                 onClick = {
                     onSubmit()
-                    Toast.makeText(ctx,"Name ${uiState.userName} Pass: ${uiState.password}",Toast.LENGTH_LONG).show()
+                    viewModel.checkReadWriteValue()
+                    Toast.makeText(
+                        ctx,
+                        "Name ${uiState.userName} Pass: ${uiState.password}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 },
                 enabled = uiState.userName.isNotBlank() && uiState.password.isNotBlank(),
             ) {

@@ -113,4 +113,7 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7'
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.4-beta"
+
+    //Datastore
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
 }

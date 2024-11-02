@@ -7,16 +7,19 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aregyan.compose.prefUtil
+import com.aregyan.compose.repository.PrefRepository
 import com.aregyan.compose.ui.navgraph.Route
 import com.aregyan.compose.util.PrefKey
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-class MainViewModel : ViewModel() {
+import javax.inject.Inject
+@HiltViewModel
+class MainViewModel @Inject constructor(private val prefRepository: PrefRepository) : ViewModel() {
     private val _loading = MutableStateFlow(true)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
     var startDestination by mutableStateOf(MainUiState())
@@ -27,9 +30,7 @@ class MainViewModel : ViewModel() {
     fun setNextDestination(path: String) {
         viewModelScope.launch(Dispatchers.IO) {
             prefUtil.set(PrefKey.KEY_ONBORDING, false)
-            val isSet = prefUtil.get(PrefKey.KEY_ONBORDING, true)
-            Log.e("Applog--log", "value $isSet")
-            startDestination = startDestination.copy(path)
+            startDestination = startDestination.copy(destinationNav = path)
         }
     }
 
@@ -37,17 +38,14 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             val isOnboardingNeedToSHow = prefUtil.get(PrefKey.KEY_ONBORDING, true)
             isOnboardingNeedToSHow?.let {
-                if (it) {
-                    startDestination =
-                        startDestination.copy(destinationNav = Route.AppStartNavigation.path)
+                startDestination = if (it) {
+                    startDestination.copy(destinationNav = Route.AppStartNavigation.path)
                 } else {
-                    startDestination =
-                        startDestination.copy(destinationNav = Route.LoginNavigation.path)
+                    startDestination.copy(destinationNav = Route.LoginNavigation.path)
                 }
-                delay(5_000L)
-                _loading.emit(false)
             }
+            delay(5_000L)
+            _loading.emit(false)
         }
-
     }
 }
