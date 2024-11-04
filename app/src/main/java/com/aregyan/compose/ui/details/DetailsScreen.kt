@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.aregyan.compose.ui.components.NoNetwork
@@ -16,6 +18,8 @@ import com.aregyan.compose.ui.components.NoNetwork
 fun DetailsScreen() {
     val viewModel = hiltViewModel<DetailsViewModel>()
     val uiState = viewModel.uiState
+
+    val uiState2 by viewModel.state.collectAsStateWithLifecycle()
 
     if (uiState.offline) {
         NoNetwork()

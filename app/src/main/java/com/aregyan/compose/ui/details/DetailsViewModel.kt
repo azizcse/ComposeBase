@@ -10,6 +10,9 @@ import com.aregyan.compose.repository.DetailsRepository
 import com.aregyan.compose.ui.Argument
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,7 +27,13 @@ class DetailsViewModel @Inject constructor(
     var uiState by mutableStateOf(DetailsUiState())
         private set
 
+    private val _state = MutableStateFlow(DetailsUiState())
+    val state = _state.asStateFlow()
+
     init {
+        /*_state.update {
+            it.copy()
+        }*/
         username?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 detailsRepository.refreshDetails(it)
