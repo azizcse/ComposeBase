@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.aregyan.compose.ui.MainViewModel
+import com.aregyan.compose.ui.dashboard.DashboardScreen
 import com.aregyan.compose.ui.login.LoginPage
 import com.aregyan.compose.ui.onboarding.OnboardingScreen
 import com.aregyan.compose.ui.onboarding.OnboardingViewModel
@@ -32,17 +33,15 @@ fun NavGraph(mainViewModel: MainViewModel) {
         }
         navigation(route = Route.LoginNavigation.path, startDestination = Route.LoginScreen.path) {
             composable(route = Route.LoginScreen.path) {
-                LoginPage {
-                    Log.e("Name", "Button clicked")
-                }
+                LoginPage(onSubmit={
+                    mainViewModel.setNextDestination(Route.DashboardNavigation.path)
+                })
             }
         }
 
         navigation(route=Route.DashboardNavigation.path,startDestination=Route.DashboardScreen.path){
-            composable(route = Route.LoginScreen.path) {
-                LoginPage {
-                    Log.e("Name", "Button clicked")
-                }
+            composable(route = Route.DashboardScreen.path) {
+                DashboardScreen()
             }
         }
     }
