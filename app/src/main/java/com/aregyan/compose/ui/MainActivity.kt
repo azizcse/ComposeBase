@@ -1,9 +1,14 @@
 package com.aregyan.compose.ui
 
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -33,6 +38,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
@@ -50,6 +56,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,22 +71,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import com.aregyan.compose.ui.navgraph.NavGraph
 import com.aregyan.compose.ui.theme.BaseAppTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
+
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             setKeepOnScreenCondition(condition = { viewModel.loading.value })
         }
+
+        val connectivityManager =
+            getSystemService(ConnectivityManager::class.java) as ConnectivityManager
         setContent {
+            val isConnected = remember { mutableStateOf(true) }
+            LaunchedEffect(Unit) {
+                lifecycleScope.launch {
+                    monitorNetworkConnectivity(connectivityManager, isConnected)
+                }
+            }
             BaseAppTheme {
                 val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemUiColor = rememberSystemUiController()
@@ -94,11 +114,64 @@ class MainActivity : ComponentActivity() {
                         .background(MaterialTheme.colorScheme.background)
                         .fillMaxSize()
                 ) {
-                    NavGraph(mainViewModel = viewModel)
+                    MainApp(isConnected, viewModel)
+                    //NavGraph(mainViewModel = viewModel)
                 }
             }
         }
     }
+}
+
+@Composable
+fun MainApp(isConnected: MutableState<Boolean>, mainViewModel: MainViewModel) {
+    if (!isConnected.value) {
+        NoInternetDialog()
+    } else {
+        NavGraph(mainViewModel = mainViewModel)
+    }
+}
+
+
+@RequiresApi(Build.VERSION_CODES.N)
+fun monitorNetworkConnectivity(
+    connectivityManager: ConnectivityManager,
+    isConnected: MutableState<Boolean>
+) {
+    val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            isConnected.value = true
+        }
+
+        override fun onLost(network: Network) {
+            isConnected.value = false
+        }
+
+        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+            val hasInternet = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            isConnected.value = hasInternet
+        }
+    }
+
+    val activeNetwork = connectivityManager.activeNetwork
+    val activeNetworkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+    isConnected.value = activeNetworkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+
+    connectivityManager.registerDefaultNetworkCallback(networkCallback)
+}
+
+
+@Composable
+fun NoInternetDialog() {
+    AlertDialog(
+        onDismissRequest = { /* Dialog dismissed */ },
+        title = { Text(text = "No Internet") },
+        text = { Text(text = "You are not connected to the internet. Please check your connection.") },
+        confirmButton = {
+            Button(onClick = { /* Retry or dismiss logic */ }) {
+                Text(text = "Retry")
+            }
+        }
+    )
 }
 
 
@@ -308,6 +381,7 @@ fun PageIndicator(
         }
     }
 }
+
 @Composable
 fun PageIndicatorView(
     isSelected: Boolean,
