@@ -92,13 +92,14 @@ fun BaseAppTheme(
         useDarkTheme -> DarkColors
         else -> LightColors
     }
+
     val view = LocalView.current
-    if (!view.isInvisible) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colors.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars= useDarkTheme
-        }
+
+    SideEffect {
+        val window = (view.context as Activity).window
+        window.statusBarColor = LightColors.secondary.toArgb()
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = useDarkTheme
+
     }
 
     MaterialTheme(

@@ -5,6 +5,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.provider.CalendarContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -74,6 +75,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.aregyan.compose.ui.navgraph.NavGraph
 import com.aregyan.compose.ui.theme.BaseAppTheme
+import com.aregyan.compose.ui.theme.md_theme_light_primary
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -101,14 +103,14 @@ class MainActivity : ComponentActivity() {
                 }
             }
             BaseAppTheme {
-                val isSystemInDarkMode = isSystemInDarkTheme()
+               /* val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemUiColor = rememberSystemUiController()
                 SideEffect {
                     systemUiColor.setSystemBarsColor(
-                        color = Color.Transparent,
+                        color = md_theme_light_primary,
                         darkIcons = !isSystemInDarkMode
                     )
-                }
+                }*/
                 Box(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)

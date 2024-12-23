@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -152,11 +155,21 @@ fun DashboardScreen() {
                 )
             },
             bottomBar = {
-                BottomAppBar {
+                BottomAppBar(tonalElevation = 4.dp) {
                     BottomNavigationBar(navController = navController)
                 }
             },
-        ) { innerPadding ->
+            floatingActionButton = {
+                FloatingActionButton(onClick = { /* Handle FAB click */ }, modifier = Modifier.padding(bottom = 20.dp)) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add"
+                    )
+                }
+            },
+            floatingActionButtonPosition = FabPosition.Center,
+
+            ) { innerPadding ->
             NavigationScreen(navController = navController, innerPadding = innerPadding)
         }
     }
