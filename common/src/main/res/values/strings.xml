@@ -1,0 +1,40 @@
+
+<resources>
+    <string name="btn_continue">Continue</string>
+    <string name="enter_mobile_number">Enter your mobile number</string>
+    <string name="mobile_number_hint">1XXXXXXXXX</string>
+    <string name="country_flag">Country Flag</string>
+    <string name="bd_country_code">+880</string>
+    <string name="pick_up_location">Pick up location</string>
+    <string name="baridhara_dohs">Baridhara dohs</string>
+    <string name="search_pick_up_location">Search pick up location</string>
+    <string name="home">Home</string>
+    <string name="savedLocation">Saved Location</string>
+    <string name="work">Work</string>
+    <string name="recent_searches">Recent Searches</string>
+    <string name="locate_on_map">Locate on map</string>
+    <string name="drop_off_location">Drop off location</string>
+    <string name="invalid_email_address">Invalid email address</string>
+    <string name="full_name">Name</string>
+    <string name="email">Email</string>
+    <string name="name_suggestion">Name</string>
+    <string name="gallery_permission_title">Gallery Permission</string>
+    <string name="gallery_permission_description">To upload profile picture it requires gallery access. Please allow galley permission</string>
+    <string name="location_permission_title">Location Permission</string>
+    <string name="location_permission_description">To provide better experience, please turn on your location. This ensures a smoother and more efficient experience for you</string>
+    <string name="camera_permission_title">Camera Permission</string>
+    <string name="camera_permission_description">To upload profile picture it requires Camera access. Please allow Camera permission</string>
+    <string name="contacts_permission_title">No Access to Address Book</string>
+    <string name="contacts_permission_description">We can\'t access your address book. You can sync it or add contacts without giving us access</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="logout_title">Log Out</string>
+    <string name="logout_des">Are you sure you want to log out?</string>
+    <string name="keep_log_in">Keep Log In</string>
+
+    <string name = "bike"> Bike </string>
+    <string name = "car"> Car </string>
+    <string name="cng"> CNG </string>
+    <string name="delivery"> Delivery </string>
+</resources>
